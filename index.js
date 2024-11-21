@@ -1,5 +1,5 @@
+// constants
 let currentPlayer = 'X'
-
 const winningPaterns = [
     [0, 1, 2],
     [3, 4, 5],
@@ -10,26 +10,28 @@ const winningPaterns = [
     [0, 4, 8],
     [2, 4, 6]
 ]
-let obj = {
+let choices = {
     'X': [],
     'O': [],
 }
+const TOTAL_CELLS = 9
+const COUNT_TO_WIN = 3
+
+// dom elements
 const cells = document.querySelectorAll('.cell')
 const playerElement = document.querySelector('#status')
 const resetButton = document.querySelector('#reset-btn')
 
+// define event listeners
 resetButton.addEventListener('click', () =>resetGame())
+cells.forEach(cell => cell.addEventListener('click', (e) => handleClick(+e.target.id)))
 
-cells.forEach(cell =>{
-    cell.addEventListener('click', (e) => handleClick(+e.target.id))
-})
-
-
+// handle events
 function handleClick(cellId) {
-    if (obj[currentPlayer].includes(cellId)) return
+    if (choices[currentPlayer].includes(cellId)) return
 
     document.getElementById(cellId).innerText = currentPlayer
-    obj[currentPlayer].push(cellId)
+    choices[currentPlayer].push(cellId)
 
     const isGameOver = checkPatternMatch()
     if (isGameOver) {
@@ -51,22 +53,20 @@ function resetGame() {
     cells.forEach(cell => {
         cell.innerText = ''
     })
-    obj['X'] = []
-    obj['O'] = []
+    choices['X'] = []
+    choices['O'] = []
     currentPlayer = 'X'
     playerElement.innerText = `Player ${currentPlayer}'s Turn`
 
 }
-
 function checkPatternMatch() {
     for (let pattern of winningPaterns) {
 
-      let filteredArr = pattern.filter(num => obj[currentPlayer].includes(num));
-      return filteredArr.length === 3;
+      let filteredArr = pattern.filter(num => choices[currentPlayer].includes(num));
+      return filteredArr.length === COUNT_TO_WIN;
     }
     return false;
-  }
-
+}
 function checkDraw() {
-    return obj['X'].length + obj['O'].length === 9
+    return choices['X'].length + choices['O'].length === TOTAL_CELLS
 }
