@@ -62,8 +62,8 @@ function resetGame() {
 function checkPatternMatch() {
     for (let pattern of winningPaterns) {
 
-      let filteredArr = pattern.filter(num => choices[currentPlayer].includes(num));
-      return filteredArr.length === COUNT_TO_WIN;
+      let filteredArrLength = pattern.filter(num => choices[currentPlayer].includes(num)).length;
+      if(filteredArrLength === COUNT_TO_WIN)  return true;
     }
     return false;
 }
