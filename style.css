@@ -1,0 +1,89 @@
+/* General page layout */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f4f4f4;
+}
+
+/* Container for the game */
+.game-container {
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 280px;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+#status {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+/* Game board */
+#game-board {
+    display: grid;
+    grid-template-columns: repeat(3, 80px);
+    grid-template-rows: repeat(3, 80px);
+    gap: 5px;
+    margin-bottom: 20px;
+}
+
+.cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 80px;
+    font-size: 32px;
+    background-color: #f0f0f0;
+    border: 2px solid #ddd;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.cell:hover {
+    background-color: #e0e0e0;
+}
+
+.cell.X {
+    color: #2a9d8f;
+}
+
+.cell.O {
+    color: #e76f51;
+}
+
+/* Reset button */
+button {
+    background-color: #264653;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #2a9d8f;
+}
+
+button:disabled {
+    background-color: #aaa;
+    cursor: not-allowed;
+}
