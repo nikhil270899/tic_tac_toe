@@ -16,21 +16,57 @@ let choices = {
 }
 const TOTAL_CELLS = 9
 const COUNT_TO_WIN = 3
+let hasGameStarted = false
 
 // dom elements
 const cells = document.querySelectorAll('.cell')
 const playerElement = document.querySelector('#status')
+const startButton = document.querySelector('#start-btn')
 const resetButton = document.querySelector('#reset-btn')
+const timer = document.querySelector('#timer')
+
+
 
 // define event listeners
-resetButton.addEventListener('click', () =>resetGame())
-cells.forEach(cell => cell.addEventListener('click', (e) => handleClick(+e.target.id)))
+startButton.addEventListener('click', handleTimer)
+resetButton.addEventListener('click', resetGame)
+cells.forEach(cell => cell.addEventListener('click', (e) => handleClick(e)))
+
+// handle start button
+function handleStart() {
+    hasGameStarted = true
+    playerElement.style.display = 'block'
+    playerElement.innerText = `Player ${currentPlayer}'s Turn`
+    resetButton.disabled = false
+    timer.style.display = 'none'
+    timer.innerText = ''
+}
+
+// handle timer
+function handleTimer() {
+    timer.style.display = 'block'
+
+    let timerCount = 3
+    let timerInterval = setInterval(() => {
+        if (timerCount < 0) {
+            clearInterval(timerInterval)
+            handleStart()
+            return
+        }
+        resetButton.disabled = true
+        startButton.disabled = true
+        timer.innerText = timerCount
+        timerCount--
+    }, 1000)
+
+}
 
 // handle events
-function handleClick(cellId) {
-    if (choices[currentPlayer].includes(cellId)) return
+function handleClick(cellElement) {
+    const cellId = +cellElement.target.id
+    if (choices[currentPlayer].includes(cellId) ||cellElement.target.innerText!== ''  || !hasGameStarted) return
 
-    document.getElementById(cellId).innerText = currentPlayer
+    cellElement.target.innerText = currentPlayer
     choices[currentPlayer].push(cellId)
 
     const isGameOver = checkPatternMatch()
@@ -42,7 +78,7 @@ function handleClick(cellId) {
 
     const isGameDraw = checkDraw()
     if (isGameDraw) {
-        alert('It\'s a draw!')
+        alert('Draw Match!')
         resetGame()
         return
     }
@@ -56,8 +92,10 @@ function resetGame() {
     choices['X'] = []
     choices['O'] = []
     currentPlayer = 'X'
-    playerElement.innerText = `Player ${currentPlayer}'s Turn`
-
+    playerElement.style.display = 'none'
+    resetButton.disabled = false
+    startButton.disabled = false
+    hasGameStarted = false
 }
 function checkPatternMatch() {
     for (let pattern of winningPaterns) {
